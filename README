@@ -1,9 +1,6 @@
 groundwork - A PHP RESTful API framework for backbone.js
 
-groundwork is a lightweight RESTful-like PHP framework that is designed to exclusively 
-output JSON encoded 'Content-Type: application/json' data for consumption via a backbone.js 
-powered front-end web application (although anything that expects JSON data could work 
-just as well).
+groundwork is a lightweight RESTful-like PHP framework that is designed to exclusively output JSON encoded 'Content-Type: application/json' data for consumption via a backbone.js powered front-end web application (although anything that expects JSON data could work just as well).
 
 groundwork offers the following features as of the initial v0.1 release:
 
@@ -16,74 +13,40 @@ groundwork offers the following features as of the initial v0.1 release:
 Getting Started
 ------------------
 
-By default, groundwork is designed to work from within the /api directory of web root. To 
-change this, simply modify the BASEDIR definition in config.php, making sure to include 
-the trailing slash.
+By default, groundwork is designed to work from within the /api directory of web root. To change this, simply modify the BASEDIR definition in config.php, making sure to include the trailing slash.
 
-A pre configured .htaccess file is included, which sends all requests to index.php. This 
-means by default groundwork is designed for use on an Apache web server, but if you wish 
-to use this on any other web server, you just need to make sure all requests to the root 
-directory which contains groundwork are channeled through index.php. Having said that, 
-groundwork has not been tested on any other web server but Apache.
+A pre configured .htaccess file is included, which sends all requests to index.php. This means by default groundwork is designed for use on an Apache web server, but if you wish to use this on any other web server, you just need to make sure all requests to the root directory which contains groundwork are channeled through index.php. Having said that, groundwork has not been tested on any other web server but Apache.
 
-To start offering resources from groundwork, create a new PHP file inside classes/resources, 
-with a filename of <resource_name>.php, where <resource_name> is the name of the resource 
-you wish to offer, e.g. users. This file is referred to as a "resource class".
+To start offering resources from groundwork, create a new PHP file inside classes/resources, with a filename of <resource_name>.php, where <resource_name> is the name of the resource you wish to offer, e.g. users. This file is referred to as a "resource class".
 
-Resource classes should extend from Resource. This ensures the resource is properly 
-established at runtime. The name of the class should match the filename, but with a leading 
-uppercase letter e.g., a 'users' resource would have a file named users.php in 
-classes/resources, and inside this file a PHP class named Users will be defined which 
-extends from Resource, i.e:
+Resource classes should extend from Resource. This ensures the resource is properly established at runtime. The name of the class should match the filename, but with a leading uppercase letter e.g., a 'users' resource would have a file named users.php in classes/resources, and inside this file a PHP class named Users will be defined which extends from Resource, i.e:
 
 class Users extends Resource
 {
 }
 
-You can open up the included 'Home' resource for an example.
+You can check out the included 'Home' resource for an example.
 
-With the resource established, you can now add a route so it is accessible. To do this, open 
-routes.php and add a new route. An example might be:
+With the resource established, you can now add a route so it is accessible. To do this, open routes.php and add a new route. An example might be:
 
 $router->add('users/:id?', 'Users');
 
-This will map /BASEDIR/users and /BASEDIR/users/x to the resource class Users. The parameter 
-'id' is accepted but not required (thanks to the ? appended to it).
+This will map /BASEDIR/users and /BASEDIR/users/x to the resource class Users. The parameter 'id' is accepted but not required (thanks to the ? appended to it).
 
-If you navigate to /BASEDIR/users now in a browser, you will probably get a 405 - Method 
-Not Allowed response. This is expected, and happens because you have not yet defined how 
-your resource should react to a GET, POST etc request. To do this, open the resource class 
-file (in this example, classes/resources/users.php) and define a new method called http_GET(). 
-In this method, add the following line of code:
+If you navigate to /BASEDIR/users now in a browser, you will probably get a 405 - Method Not Allowed response. This is expected, and happens because you have not yet defined how your resource should react to a GET, POST etc request. To do this, open the resource class file (in this example, classes/resources/users.php) and define a new method called http_GET(). In this method, add the following line of code:
 
 $this->response->generate(200, 'Hello World');
 
-If you navigate to /BASEDIR/users now, you should get a nice and happy HTTP 200 response with 
-a body of 'Hello World'. The POST, PUT and DELETE HTTP request methods are handled in the same 
-way - that is, by defining methods named http_POST, http_PUT and http_DELETE. You don't have 
-to define all methods - just those your resource requires. Any undefined method will simply 
-generate a 405 - Method Not Allowed if accessed.
+If you navigate to /BASEDIR/users now, you should get a nice and happy HTTP 200 response with a body of 'Hello World'. The POST, PUT and DELETE HTTP request methods are handled in the same way - that is, by defining methods named http_POST, http_PUT and http_DELETE. You don't have to define all methods - just those your resource requires. Any undefined method will simply generate a 405 - Method Not Allowed if accessed.
 
 Here are a few more tips:
 
-- It is largely up to you to respond with the correct HTTP status codes. If you open up 
-response.php in the classes directory, you will see all those that are available to respond 
-with via the first argument in Response::generate(). You can add and remove to this array of 
-possible responses as you please.
-
-- If you define a resource class that extends from Resource, then you have access to the 
-properties $this->requestData, $this->requestMethod and $this->uriParams. These are fairly 
-self explanatory in what they contain - requestData is a stdClass object instance which 
-contains any data sent with the request, requestMethod is a string which contains the 
-HTTP method the request used, and uriParams is a stdClass object instance which contains 
-values from the URI, if the route is expecting dynamic parameters.
+- It is largely up to you to respond with the correct HTTP status codes. If you open up response.php in the classes directory, you will see all those that are available to respond with via the first argument in Response::generate(). You can add and remove to this array of possible responses as you please.
+- If you define a resource class that extends from Resource, then you have access to the properties $this->requestData, $this->requestMethod and $this->uriParams. These are fairly self explanatory in what they contain - requestData is a stdClass object instance which contains any data sent with the request, requestMethod is a string which contains the HTTP method the request used, and uriParams is a stdClass object instance which contains values from the URI, if the route is expecting dynamic parameters.
 
 - Read routes.php for a more detailed explanation on defining routes.
 
-- groundwork is "RESTful-like", in that it has inbuilt support for handing the big four 
-HTTP request methods and encourages some of the basic RESTful principles. However it is 
-up to the developer to make a RESTful API with this framework - groundwork won't stop 
-someone you from coding routes with verbs in them and responding with HTTP 200 on errors.
+- groundwork is "RESTful-like", in that it has inbuilt support for handing the big four HTTP request methods and encourages some of the basic RESTful principles. However it is up to the developer to make a RESTful API with this framework - groundwork won't stop someone you from coding routes with verbs in them and responding with HTTP 200 on errors.
 
 License
 ----------
