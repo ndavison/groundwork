@@ -46,7 +46,7 @@ Here are a few more tips:
 
 - Read routes.php for a more detailed explanation on defining routes.
 
-- groundwork is "RESTful-like", in that it has inbuilt support for handing the big four HTTP request methods and encourages some of the basic RESTful principles. However it is up to the developer to make a RESTful API with this framework - groundwork won't stop someone you from coding routes with verbs in them and responding with HTTP 200 on errors.
+- groundwork is "RESTful-like", in that it has inbuilt support for handing the big four HTTP request methods and encourages some of the basic RESTful principles. However it is up to the developer to make a RESTful API with this framework - groundwork won't stop you from coding routes with verbs in them, responding with HTTP 200 on errors, changing resources on GET requests, and other RESTful no-no's.
 
 License
 ----------
