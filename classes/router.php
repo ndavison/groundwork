@@ -41,8 +41,8 @@ class Router
                         '/\2(?P<\1>[^ /?]+)\2',
                     $route);
             
-            // Check for a regex match
-            if (preg_match('%' . $route . '$%', $this->request->get('requestedRoute'), $uriParams)) {
+            // Check for a regex match with the requestedRoute and this route iteration
+            if (preg_match('%^' . $route . '$%', $this->request->get('requestedRoute'), $uriParams)) {
                 // We have a match, but does the className file exist?
                 if (file_exists(__DIR__ . '/resources/' . strtolower($className) . '.php')) {
                     // File exists, but does the class name match?
