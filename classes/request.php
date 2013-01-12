@@ -33,6 +33,10 @@ class Request
         $this->requestMethod = $_SERVER['REQUEST_METHOD'];
         
         // Establish the requestData property
+        // What's going on here? first we try to decode the PHP input as JSON, which is 
+        // what works natively with backbone.js. If this fails, then we try to parse 
+        // the PHP input as a query string - this should cover standard POST requests. 
+        // Finally, if this also fails, we simply try to obtain the GET parameters.
         if (!$this->requestData = json_decode(file_get_contents('php://input'))) {
             if (file_get_contents('php://input')) {
                 parse_str(file_get_contents('php://input'), $this->requestData);
