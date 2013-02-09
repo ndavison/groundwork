@@ -17,7 +17,7 @@ backend communicating with a backbone.js, or equivalent, frontend.
 ## Examples
 
 In the following example, I'll setup a quick route to respond to the request 
-/articles/199. In App/routes.php, add:
+`/articles/199`. In App/routes.php, add:
 
 ```php
 <?php
