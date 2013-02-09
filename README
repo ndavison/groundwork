@@ -1,55 +1,123 @@
-groundwork - A PHP RESTful API framework for backbone.js
+# groundwork - A PHP micro-framework for RESTful JSON API development
 
-groundwork is a lightweight RESTful-like PHP framework that is designed to exclusively output JSON encoded 'Content-Type: application/json' data for consumption via a backbone.js powered front-end web application (although anything that expects JSON data could work just as well).
+groundwork is a lightweight RESTful-like PHP framework that is designed to 
+accept input and output in JSON. It is designed to quickly get a PHP 
+backend communicating with a backbone.js, or equivalent, frontend.
 
-groundwork offers the following features as of the initial v0.1 release:
+## groundwork offers the following features:
 
-- The ability to map a URI route to a single PHP "resource class".
-- Routes can contain dynamic parameters (e.g. /users/:id).
+- Easily route to a "resource" class or a Closure.
+- Routes support parameters you can label and retrieve by name.
 - JSON input decoding and output encoding (just as backbone.js expects).
-- The ability to easily respond to requests using common HTTP status codes.
+- Easily respond to requests using common HTTP status codes.
 - Simple handling of GET, POST, PUT and DELETE HTTP methods on resources.
+- A footprint of about 20KB at the core.
+- Composer ready - just edit composer.json with your dependencies.
 
-Getting Started
-------------------
+## Examples
 
-By default, groundwork is designed to work from within the /api directory of web root. To change this, simply modify the BASEDIR definition in config.php, making sure to include the trailing slash.
+In the following example, I'll setup a quick route to respond to the request 
+/articles/199. In App/routes.php, add:
 
-A pre configured .htaccess file is included, which sends all requests to index.php. This means by default groundwork is designed for use on an Apache web server, but if you wish to use this on any other web server, you just need to make sure all requests to the root directory which contains groundwork are channeled through index.php. Having said that, groundwork has not been tested on any other web server but Apache.
+```php
+<?php
 
-To start offering resources from groundwork, create a new PHP file inside classes/resources, with a filename of <resource_name>.php, where <resource_name> is the name of the resource you wish to offer, e.g. users. This file is referred to as a "resource class".
+$router->register('articles/:id', function($request, $response) {
+    $response->send(200, $request->routeParams());
+});
 
-Resource classes should extend from Resource. This ensures the resource is properly established at runtime. The name of the class should match the filename, but with a leading uppercase letter e.g., a 'users' resource would have a file named users.php in classes/resources, and inside this file a PHP class named Users will be defined which extends from Resource, i.e:
+```
 
-class Users extends Resource
+This will respond with {"id":"199"} in the response body when handed the 
+request '/articles/199', and a HTTP status code of 200.
+
+In the next example, I will assign a route to a "resource" class. First, setup 
+the route, in App/routes.php:
+
+```php
+<?php
+
+$router->register('users/:id', 'users');
+
+```
+
+Then create the file 'Users.php' in App/Resources with the following:
+
+```php
+<?php
+
+namespace App\Resources;
+
+class Users extends \Groundwork\Classes\Resource
 {
+    protected function http_GET()
+    {
+        $this->response->send(200, $this->request->routeParams());
+    }
 }
 
-You can check out the included 'Home' resource for an example.
+```
 
-With the resource established, you can now add a route so it is accessible. To do this, open routes.php and add a new route. An example might be:
+Now, accessing 'users/10' will respond with {"id":"10"} in the response body, 
+and a HTTP status code of 200. However, it will only do this on GET requests - 
+other HTTP request methods can be specifically targeted via their own methods 
+on the App\Resources\Users class (e.g. http_POST, http_PUT etc).
 
-$router->add('users/:id?', 'Users');
+## Installation
 
-This will map /BASEDIR/users and /BASEDIR/users/x to the resource class Users. The parameter 'id' is accepted but not required (thanks to the ? appended to it).
+- Requires PHP 5.3.0 or newer
+- Requires Composer
 
-If you navigate to /BASEDIR/users now in a browser, you will probably get a 405 - Method Not Allowed response. This is expected, and happens because you have not yet defined how your resource should react to a GET, POST etc request. To do this, open the resource class file (in this example, classes/resources/users.php) and define a new method called http_GET(). In this method, add the following line of code:
+groundwork is designed to have the 'public' directory as the only directory in 
+the package accessible via the web. This means that if you're installing 
+groundwork under a VirtualHost in Apache, the web root should point to the 
+'public' directory (e.g. /var/www/html/groundwork/public, perhaps). If you're 
+installing groundwork under a sub directory of web root and not as its own 
+virtual host, then you can setup an Apache alias to the public directory to 
+achieve a nicer directory on your web side.
 
-$this->response->generate(200, 'Hello World');
+groundwork is built to work with [Composer][http://getcomposer.org] and as 
+such having Composer installed is a requirement.
 
-If you navigate to /BASEDIR/users now, you should get a nice and happy HTTP 200 response with a body of 'Hello World'. The POST, PUT and DELETE HTTP request methods are handled in the same way - that is, by defining methods named http_POST, http_PUT and http_DELETE. You don't have to define all methods - just those your resource requires. Any undefined method will simply generate a 405 - Method Not Allowed if accessed.
+The composer.json packaged with groundwork is enough to get you started - just 
+run a 'composer install' where you have located groundwork and it will build 
+the necessary files (namely, the autoload package).
 
-Here are a few more tips:
+There are no other dependencies, as groundwork is designed to be very light 
+weight. The point of building around Composer is you can easily add packages 
+for functionality. For example, if you edit composer.json after install and 
+change the "requires" key to this...
 
-- It is largely up to you to respond with the correct HTTP status codes. If you open up response.php in the classes directory, you will see all those that are available to respond with via the first argument in Response::generate(). You can add and remove to this array of possible responses as you please.
+```js
+"requires": {
+    "php": ">=5.3.0",
+    "illuminate/database": "*",
+    "dhorrigan/capsule": "*"
+}
+```
 
-- If you define a resource class that extends from Resource, then you have access to the properties $this->requestData, $this->requestMethod and $this->uriParams. These are fairly self explanatory in what they contain - requestData is a stdClass object instance which contains any data sent with the request, requestMethod is a string which contains the HTTP method the request used, and uriParams is a stdClass object instance which contains values from the URI, if the route is expecting dynamic parameters.
+... and then run 'composer update', you will gain Laravel's database 
+abstraction, including the Eloquent ORM (capsule is to make loading the Laravel 
+DB abstraction easier). This is of course just a single example - you can add 
+other packages too.
 
-- Read routes.php for a more detailed explanation on defining routes.
+## Autoload
 
-- groundwork is "RESTful-like", in that it has inbuilt support for handing the big four HTTP request methods and encourages some of the basic RESTful principles. However it is up to the developer to make a RESTful API with this framework - groundwork won't stop you from coding routes with verbs in them, responding with HTTP 200 on errors, changing resources on GET requests, and other RESTful no-no's.
+groundwork uses the Composer autoload.php located in 'vendor' to 
+automatically require classes that are namespaced and located as per psr-0. The 
+autoloading capabilities are only available after an initial "composer install" 
+is run, hence why it is part of the installation procedure outlined above even 
+if you don't have any packages to add.
 
-License
-----------
+There are two locations available "out of the box" (besides Resources) where 
+you can add your own classes - App/Library and App/Models. Classes in those 
+locations namespaced according to their location (e.g. namespace App\Library) 
+will be autoloaded when referenced in route callbacks/resource classes.
+
+Of course, packages gathered via Composer from editing composer.json's 
+"require" key will also be autoloaded from route callbacks/resource classes 
+as well.
+
+## License
 
 groundwork is open-sourced software licensed under the MIT License.
