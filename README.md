@@ -28,8 +28,8 @@ $router->register('articles/:id', function($request, $response) {
 
 ```
 
-This will respond with {"id":"199"} in the response body when handed the 
-request '/articles/199', and a HTTP status code of 200.
+This will respond with `{"id":"199"}` in the response body when handed the 
+request `/articles/199`, and a HTTP status code of 200.
 
 In the next example, I will assign a route to a "resource" class. First, setup 
 the route, in App/routes.php:
@@ -58,7 +58,7 @@ class Users extends \Groundwork\Classes\Resource
 
 ```
 
-Now, accessing 'users/10' will respond with {"id":"10"} in the response body, 
+Now, accessing `users/10` will respond with `{"id":"10"}` in the response body, 
 and a HTTP status code of 200. However, it will only do this on GET requests - 
 other HTTP request methods can be specifically targeted via their own methods 
 on the App\Resources\Users class (e.g. http_POST, http_PUT etc).
@@ -76,7 +76,7 @@ installing groundwork under a sub directory of web root and not as its own
 virtual host, then you can setup an Apache alias to the public directory to 
 achieve a nicer directory on your web side.
 
-groundwork is built to work with [Composer][http://getcomposer.org] and as 
+groundwork is built to work with [Composer](http://getcomposer.org) and as 
 such having Composer installed is a requirement.
 
 The composer.json packaged with groundwork is enough to get you started - just 
