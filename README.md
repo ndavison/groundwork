@@ -76,6 +76,11 @@ installing groundwork under a sub directory of web root and not as its own
 virtual host, then you can setup an Apache alias to the public directory to 
 achieve a nicer directory on your web side.
 
+The file App/config.php contains the variable `$basedir` which you will need to 
+change to reflect where groundwork exists relative to the web root - e.g. if 
+it is installed into http://foo.com/bar/, then '/bar/' would be your `$basedir` 
+value.
+
 groundwork is built to work with [Composer](http://getcomposer.org) and as 
 such having Composer installed is a requirement.
 
