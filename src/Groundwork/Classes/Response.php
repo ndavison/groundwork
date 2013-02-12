@@ -43,12 +43,14 @@ class Response
      * @param int $statusCode
      * @param mixed $body 
      */
-    public function send($code, $body)
+    public function send($code, $body = '')
     {
         if (!isset($this->codes[$code])) {
             $statusCode = 500;
             $body = 'API attempted to return an unknown HTTP status.';
         }
+        // if the body wasn't defined, default to the inbuilt response
+        if (!$body) $body = $this->codes[$code];
         header('HTTP/1.1 ' . $code . ' ' . $this->codes[$code]);
         header('Content-type: application/json');
         echo json_encode($body);
