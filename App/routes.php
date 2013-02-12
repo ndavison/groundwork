@@ -13,6 +13,15 @@ $router->register('demo/:id?/:field?', function($request, $response) {
     $response->send(200, $request->routeParams());
 });
 
+// A demo showing how a route can be registered with a HTTP method based 
+// shortcut - safe to delete.
+$router->get('users', function($request, $response) {
+    $response->send(200);
+});
+$router->post('users', function($request, $response) {
+    $response->send(200);
+});
+
 /**
  * The first param of the Router::register() method is the route as a string. 
  * Some valid route formats are as follows:

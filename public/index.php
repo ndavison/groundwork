@@ -34,7 +34,7 @@ require '../App/routes.php';
 $response = new Response;
 
 // Attempt to match the requested route with a registered route
-if ($router->matchRequest($request->route())) {
+if ($router->matchRequest($request->route(), $request->httpMethod())) {
     
     // A match was found - pass any route params to the Request instance
     $request->routeParams($router->params());

@@ -3,7 +3,7 @@
     
     "description": "A PHP micro-framework for making RESTful JSON APIs",
     
-    "version": "0.2.0",
+    "version": "0.2.2",
     
     "type": "library",
     

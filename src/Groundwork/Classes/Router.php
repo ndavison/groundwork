@@ -56,12 +56,16 @@ class Router
      * the callback logic.
      * 
      * @param string $route
-     * @param string $callback 
+     * @param string $callback
+     * @param string $httpMethod
      */
-    public function register($route, $callback)
+    public function register($route, $callback, $httpMethod = '')
     {
-        // Convert empty routes to the string 'home'
-        if ($route == '') $route = 'home';
+        // Convert empty routes to the string 'method:home'
+        if (!$route) $route = 'home';
+        
+        // append the http method supplied
+        if ($httpMethod) $route = strtolower($httpMethod).':'.$route;
         
         // Convert the class name to its correct case
         if (is_string($callback)) {
@@ -70,32 +74,88 @@ class Router
         
         $this->routes[$route] = $callback;
     }
+    
+    /**
+     * Shortcut to register a GET route.
+     *  
+     * @param type $route
+     * @param type $callback 
+     */
+    public function get($route, $callback)
+    {
+        $this->register($route, $callback, 'GET');
+    }
+    
+    /**
+     * Shortcut to register a POST route.
+     *  
+     * @param type $route
+     * @param type $callback 
+     */
+    public function post($route, $callback)
+    {
+        $this->register($route, $callback, 'POST');
+    }
+    
+    /**
+     * Shortcut to register a PUT route.
+     *  
+     * @param type $route
+     * @param type $callback 
+     */
+    public function put($route, $callback)
+    {
+        $this->register($route, $callback, 'PUT');
+    }
+    
+    /**
+     * Shortcut to register a DELETE route.
+     *  
+     * @param type $route
+     * @param type $callback 
+     */
+    public function delete($route, $callback)
+    {
+        $this->register($route, $callback, 'DELETE');
+    }
         
     /**
      * Compares the requested route param with the registered routes and checks 
      * whether there is a match - true on a match, false if not.
      * 
      * @param string $requestedRoute
+     * @param string $httpMethod
      * @return boolean
      */
-    public function matchRequest($requestedRoute)
+    public function matchRequest($requestedRoute, $httpMethod)
     {
         // Iterate through each route that has been registered
         foreach ($this->routes as $route => $callback) {
-                        
+            
             // Convert the route to a regex pattern
             $routeRx = preg_replace(
                         '%/:?([^ /?]+)(\?)?%',
                         '/\2(?P<\1>[^ /?]+)\2',
                     $route);
             
+            // If the route also defined a HTTP method to match against, 
+            // append the requested route with the request's method
+            $routeMethod = strstr($route, ':', true);
+            if ($routeMethod && substr($routeMethod, -1) != '/') {
+                $requestPrepend = strtolower($httpMethod).':';
+            } else {
+                $requestPrepend = '';
+            }
+            
             // Check for a regex match with the requested route. Store the 
             // matches in a variable so the Request instance can be informed.
             if (preg_match('%^' . $routeRx . '$%',
-                            $requestedRoute,
+                            $requestPrepend.$requestedRoute,
                             $uriParams)
                 ) {
-                // A match was found - before returning true, store the params 
+                // A route match was found -
+                
+                // Before returning true, store the params 
                 // that were matched, and store the matched route.
                 foreach ($uriParams as $key => $value) {
                     if (is_numeric($key)) unset($uriParams[$key]);
