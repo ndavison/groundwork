@@ -1,5 +1,5 @@
 {
-    "name": "groundwork/groundwork",
+    "name": "groundwork/app",
     
     "description": "A PHP micro-framework for making RESTful JSON APIs",
     
@@ -25,17 +25,12 @@
     },
     
     "require": {
-        "php": ">=5.3.0"
+        "php": ">=5.3.0",
+        "groundwork/framework": "dev-master"
     },
-    
-    "suggest": {
-        "illuminate/database": "Laravel's database abstraction is great for adding ORM capabilities",
-        "dhorrigan/capsule": "Capsule is a wrapper for using Laravel's database outside of Laravel"
-    },
-    
+        
     "autoload": {
         "psr-0": {
-            "Groundwork": "src/",
             "App": ""
         }
     }

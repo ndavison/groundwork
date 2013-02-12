@@ -101,11 +101,12 @@ it is installed into http://foo.com/bar/, then '/bar/' would be your `$basedir`
 value.
 
 groundwork is built to work with [Composer](http://getcomposer.org) and as 
-such having Composer installed is a requirement.
+such having Composer installed is a requirement. This is how you obtain the 
+framework components of groundwork.
 
-The composer.json packaged with groundwork is enough to get you started - just 
-run a 'composer install' where you have located groundwork and it will build 
-the necessary files (namely, the autoload package).
+The composer.json packaged is enough to get you started - just run a 
+'composer install' where you have located groundwork and it will build the 
+necessary files.
 
 There are no other dependencies, as groundwork is designed to be very light 
 weight. The point of building around Composer is you can easily add packages 
@@ -115,6 +116,7 @@ change the "requires" key to this...
 ```js
 "requires": {
     "php": ">=5.3.0",
+    "groundwork/framework": "dev-master",
     "illuminate/database": "*",
     "dhorrigan/capsule": "*"
 }
@@ -128,15 +130,14 @@ other packages too.
 ## Autoload
 
 groundwork uses the Composer autoload.php located in 'vendor' to 
-automatically require classes that are namespaced and located as per psr-0. The 
-autoloading capabilities are only available after an initial "composer install" 
-is run, hence why it is part of the installation procedure outlined above even 
-if you don't have any packages to add.
+automatically require classes that are namespaced and located as per psr-0.
 
 There are two locations available "out of the box" (besides Resources) where 
 you can add your own classes - App/Library and App/Models. Classes in those 
 locations namespaced according to their location (e.g. namespace App\Library) 
-will be autoloaded when referenced in route callbacks/resource classes.
+will be autoloaded when referenced in route callbacks/resource classes. If you 
+wish to create further directories and namespace the classes in them 
+accordingly, then they should autoload as well.
 
 Of course, packages gathered via Composer from editing composer.json's 
 "require" key will also be autoloaded from route callbacks/resource classes 
