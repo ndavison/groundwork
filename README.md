@@ -29,7 +29,23 @@ $router->register('articles/:id', function($request, $response) {
 ```
 
 This will respond with `{"id":"199"}` in the response body when handed the 
-request `/articles/199`, and a HTTP status code of 200.
+request `/articles/199`, and a HTTP status code of 200. This is not HTTP 
+request method specific.
+
+To make a route respond to specific HTTP request methods, you can replace 
+register() with get(), post(), put() or delete(). E.g.:
+
+```php
+
+<?php
+
+$router->post('articles/:id', function($request, $response) {
+    $response->send(201, $request->routeParams());
+});
+
+```
+
+This would respond to `/articles/199` only when the request is a HTTP POST.
 
 In the next example, I will assign a route to a "resource" class. First, setup 
 the route, in App/routes.php:
@@ -61,7 +77,10 @@ class Users extends \Groundwork\Classes\Resource
 Now, accessing `users/10` will respond with `{"id":"10"}` in the response body, 
 and a HTTP status code of 200. However, it will only do this on GET requests - 
 other HTTP request methods can be specifically targeted via their own methods 
-on the App\Resources\Users class (e.g. http_POST, http_PUT etc).
+on the App\Resources\Users class (e.g. http_POST, http_PUT etc). This means 
+mapping routes to resource classes only really makes sense when using register() 
+and not when using the HTTP method specific Router methods, as the HTTP 
+request method mapping is done at the resource class level.
 
 ## Installation
 
