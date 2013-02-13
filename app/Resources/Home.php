@@ -4,7 +4,7 @@
  * defined.
  */
 
-namespace App\Resources;
+namespace Resources;
 
 class Home extends \Groundwork\Classes\Resource
 {      

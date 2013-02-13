@@ -1,13 +1,13 @@
 <?php
 /** 
- * groundwork - A PHP RESTful API framework for backbone.js, and possibly other 
+ * groundwork - A PHP RESTful API framework for backbone.js, and equivalent, 
  * JSON clients.
  * 
  * This is the main "landing page" that all requests are channeled through via 
  * the magic that is .htaccess.
  * 
  * @author Nathan Davison http://www.nathandavison.com
- * @version 0.2.0
+ * @version 0.2.4
  */
 
 use Groundwork\Classes\Request;
@@ -19,7 +19,7 @@ use Groundwork\Classes\Resource;
 require '../vendor/autoload.php';
 
 // Require the App config
-require '../App/config.php';
+require '../app/config.php';
 
 // The Request instance
 $request = new Request($basedir);
@@ -28,7 +28,7 @@ $request = new Request($basedir);
 $router = new Router;
 
 // Require the app routes
-require '../App/routes.php';
+require '../app/routes.php';
 
 // The Response instance
 $response = new Response;

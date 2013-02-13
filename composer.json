@@ -3,7 +3,7 @@
     
     "description": "A PHP micro-framework for making RESTful JSON APIs",
     
-    "version": "0.2.2",
+    "version": "0.2.4",
     
     "type": "library",
     
@@ -31,7 +31,10 @@
         
     "autoload": {
         "psr-0": {
-            "App": ""
+            "Resources": "app/",
+            "Library": "app/",
+            "Models": "app/",
+            "Tests": "app/"
         }
     }
 }

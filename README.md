@@ -17,7 +17,7 @@ backend communicating with a backbone.js, or equivalent, frontend.
 ## Examples
 
 In the following example, I'll setup a quick route to respond to the request 
-`/articles/199`. In App/routes.php, add:
+`/articles/199`. In app/routes.php, add:
 
 ```php
 <?php
@@ -48,7 +48,7 @@ $router->post('articles/:id', function($request, $response) {
 This would respond to `/articles/199` only when the request is a HTTP POST.
 
 In the next example, I will assign a route to a "resource" class. First, setup 
-the route, in App/routes.php:
+the route, in app/routes.php:
 
 ```php
 <?php
@@ -57,12 +57,12 @@ $router->register('users/:id', 'users');
 
 ```
 
-Then create the file 'Users.php' in App/Resources with the following:
+Then create the file 'Users.php' in app/Resources with the following:
 
 ```php
 <?php
 
-namespace App\Resources;
+namespace Resources;
 
 class Users extends \Groundwork\Classes\Resource
 {
@@ -77,7 +77,7 @@ class Users extends \Groundwork\Classes\Resource
 Now, accessing `users/10` will respond with `{"id":"10"}` in the response body, 
 and a HTTP status code of 200. However, it will only do this on GET requests - 
 other HTTP request methods can be specifically targeted via their own methods 
-on the App\Resources\Users class (e.g. http_POST, http_PUT etc). This means 
+on the app\Resources\Users class (e.g. http_POST, http_PUT etc). This means 
 mapping routes to resource classes only really makes sense when using register() 
 and not when using the HTTP method specific Router methods, as the HTTP 
 request method mapping is done at the resource class level.
@@ -95,7 +95,7 @@ installing groundwork under a sub directory of web root and not as its own
 virtual host, then you can setup an Apache alias to the public directory to 
 achieve a nicer directory on your web side.
 
-The file App/config.php contains the variable `$basedir` which you will need to 
+The file app/config.php contains the variable `$basedir` which you will need to 
 change to reflect where groundwork exists relative to the web root - e.g. if 
 it is installed into http://foo.com/bar/, then '/bar/' would be your `$basedir` 
 value.
@@ -133,15 +133,30 @@ groundwork uses the Composer autoload.php located in 'vendor' to
 automatically require classes that are namespaced and located as per psr-0.
 
 There are two locations available "out of the box" (besides Resources) where 
-you can add your own classes - App/Library and App/Models. Classes in those 
-locations namespaced according to their location (e.g. namespace App\Library) 
-will be autoloaded when referenced in route callbacks/resource classes. If you 
-wish to create further directories and namespace the classes in them 
-accordingly, then they should autoload as well.
+you can add your own classes - app/Library and app/Models. Classes in those 
+locations namespaced according to their location relative to the app directory 
+(e.g. namespace Library;) will be autoloaded when referenced in route 
+callbacks/resource classes.
 
 Of course, packages gathered via Composer from editing composer.json's 
 "require" key will also be autoloaded from route callbacks/resource classes 
 as well.
+
+## Function tests
+
+groundwork comes with a basic function test case in app/Tests built to confirm 
+correct operation of the home route defined by default, using cURL as a client. 
+The patterns this test case follows can be emulated for producing tests of your 
+defined routes.
+
+If you delete the default home route and resource class, then this test case 
+will likely fail. This test case also assumes that your web server can access 
+itself via 'localhost'. 
+
+Besides offering an example pattern for future function tests of your API's 
+routes from a client's perspective, if you run this test case immediately after 
+installing and configuring groundwork, and it passes, then this confirms that 
+the framework is configured correctly.
 
 ## License
 

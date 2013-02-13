@@ -1,7 +1,8 @@
 <?php
 /**
  * Define the app routes in this file. This is done via the Router::register() 
- * method. See below for a full description of the routing in groundwork.
+ * method, or methods matching the four major HTTP methods (get, post, put and 
+ * delete). See below for a full description of the routing in groundwork.
  */
 
 // The app home
@@ -23,7 +24,7 @@ $router->post('users', function($request, $response) {
 });
 
 /**
- * The first param of the Router::register() method is the route as a string. 
+ * The first param of the route registration methods is the route as a string. 
  * Some valid route formats are as follows:
  * 
  * '' to /$basedir/
@@ -32,14 +33,14 @@ $router->post('users', function($request, $response) {
  * 'articles/:id? maps to /$basedir/articles/x (where x is optional)
  * 'articles/:id/:field to /$basedir/articles/x/y
  * 
- * Where $basedir is the web root, defined in App/config.php.
+ * Where $basedir is the web root, defined in app/config.php.
  * 
  * The second param can be a string or an anonymous function. Its job is to 
  * dictate what happens when a route is encountered.
  * 
  * As a string, it should equal the name of a class extending from 
- * \Groundwork\Classes\Resource that exists in App/Resources, in the 
- * \App\Resources namespace. This second param is not case sensitive, although 
+ * \Groundwork\Classes\Resource that exists in app/Resources, in the 
+ * \Resources namespace. This second param is not case sensitive, although 
  * the class name itself should have a leading uppercase, as should the file 
  * name itself. 
  * 
@@ -55,7 +56,7 @@ $router->post('users', function($request, $response) {
  * with the HTTP request method determining which method of Articles is 
  * accessed to generate the output, e.g. http_GET() for GET, http_POST() for 
  * POST, and so on. For a working example, see the Home resource that is 
- * included with the framework (App/Resources/Home.php). This is a bare 
+ * included with the framework (app/Resources/Home.php). This is a bare 
  * minimal Resource child class to respond to GET/POST/PUT/DELETE requests.
  * 
  * As an anonymous function/closure, the second param becomes the sole source 
@@ -64,15 +65,14 @@ $router->post('users', function($request, $response) {
  * responses.
  * 
  * When defining your anonymous function, you are given a few params - 
- * $request (the instance of \Groundwork\Classes\Request) and $response (the 
+ * $request (an instance of \Groundwork\Classes\Request) and $response (an 
  * instance of \Groundwork\Classes\Response), in that order. In other words, 
  * you have the same functionality as you would have when writing a full 
- * Resource class to handle requests and responsed, however as mentioned you 
- * will need to define your own logic regarding the HTTP request method.
+ * Resource class to handle requests and responses.
  * 
  * Here is an example of an anonymous function route:
  * 
- * $router->register('articles/:id', function($request, $response, $router) {
+ * $router->get('articles/:id?', function($request, $response) {
  *      $response->send(200, $request->routeParams());
  * });
  * 
