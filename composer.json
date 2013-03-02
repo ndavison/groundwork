@@ -25,7 +25,7 @@
     
     "require": {
         "php": ">=5.3.0",
-        "groundwork/framework": "0.2.4"
+        "groundwork/framework": "0.3.0"
     },
         
     "autoload": {
