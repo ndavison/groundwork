@@ -6,19 +6,17 @@
 
 namespace Resources;
 
-class Home extends \Groundwork\Classes\Resource
-{      
-    /**
-     * A "constructor" like method, in that it is called before every request 
-     * to this resource. You don't have to define this in your resources.
-     *
-     * @return void
-     */
-    public function init()
-    {
-        return;
+class HomeResource extends \Groundwork\Classes\Resource
+{   
+    public function __construct(
+        \Groundwork\Classes\Request $request, 
+        \Groundwork\Classes\Response $response
+    ) {
+        // Establish the instances as properties for easy access
+        $this->request = $request;
+        $this->response = $response;
     }
-    
+        
     /**
      * HTTP GET
      * 

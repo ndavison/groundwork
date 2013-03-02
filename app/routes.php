@@ -6,7 +6,7 @@
  */
 
 // The app home
-$router->register('', 'home');
+$router->register('', 'HomeResource');
 
 // A demo route showing how a route can be registered with an anonymous 
 // function - safe to delete.
