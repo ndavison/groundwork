@@ -1,4 +1,5 @@
 # groundwork - A PHP micro-framework for RESTful JSON API development
+[![Build Status](https://travis-ci.org/ndavison/groundwork.svg?branch=master)](https://travis-ci.org/ndavison/groundwork)
 
 groundwork is a lightweight RESTful-like PHP framework that is designed to 
 accept input and output in JSON. It is designed to quickly get a PHP 
