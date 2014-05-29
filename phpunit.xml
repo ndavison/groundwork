@@ -1,0 +1,7 @@
+<phpunit>
+  <testsuites>
+    <testsuite name="Groundwork Framework Tests">
+      <directory>vendor/groundwork/framework/src/Groundwork/Tests/</directory>
+    </testsuite>
+  </testsuites>
+</phpunit>
